@@ -10,10 +10,11 @@
 					<form method="POST" action="/attendees/{{ $attendee->id }}" class="card" enctype="multipart/form-data">
 						@method('PATCH')
 						@csrf
-
-                		<input type="text" name="verification_code">
-                		<button type="submit" name="submit">Verify</button>
-
+                        <div class="form-group">
+                            <label for="exampleFormControlInput1">Verification Code</label>
+                            <input type="number" class="form-control" name="verification_code">
+                        </div>
+                		<button type="submit" class="btn btn-primary">Verify</button>
                 	</form>
 					@foreach($errors->all() as $error)
 						<div class="alert alert-danger" role="alert">
