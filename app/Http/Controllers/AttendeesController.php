@@ -21,7 +21,7 @@ class AttendeesController extends Controller
     {
         $attendees = Attendee::all();
 
-        return view('attendees.index', ['attendees' => $attendees]);
+        return view('attendees.index', compact('attendees'));
     }
 
     /**
@@ -68,6 +68,21 @@ class AttendeesController extends Controller
     }
 
     /**
+     * Show the form for verifying the specified resource.
+     *
+     * @param  \App\Attendee  $attendee
+     * @return \Illuminate\Http\Response
+     */
+    public function verify(Attendee $attendee)
+    {
+        Attendee::whereId($attendee->id)->update([
+            'verification_code' => rand(100000, 999999)
+        ]);
+        $attendee = Attendee::find($attendee->id);
+        return view('attendees.verify', compact('attendee'));
+    }
+
+    /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -76,7 +91,20 @@ class AttendeesController extends Controller
      */
     public function update(Request $request, Attendee $attendee)
     {
-        //
+        $verification_code = request()->validate([
+            'verification_code' => ['required','numeric', 'max:999999', 'min:100000']
+        ]);
+
+        // dd([$verification_code, $attendee->verification_code]);
+
+        if ( in_array($attendee->verification_code, $verification_code, ) ){
+            $attributes['verified_at'] = now();
+            Attendee::whereId($attendee->id)->update($attributes);
+            return redirect('/attendees/');            
+        } else {
+            return redirect()->back()->withErrors(['Verification Code Did Not Match']);
+        };
+
     }
 
     /**

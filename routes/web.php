@@ -20,3 +20,5 @@ Auth::routes(['register' => false]);
 Route::get('/home', 'HomeController@index')->name('home');
 
 Route::resource('/attendees', 'AttendeesController');
+
+Route::get('/attendees/{attendee}/verify', 'AttendeesController@verify')->name('attendees.verify');

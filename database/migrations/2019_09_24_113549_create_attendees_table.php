@@ -20,6 +20,7 @@ class CreateAttendeesTable extends Migration
             $table->string('email');
             $table->bigInteger('phone')->unique();
             $table->timestamp('verified_at')->nullable();
+            $table->bigInteger('verification_code')->nullable();
             $table->timestamps();
         });
     }

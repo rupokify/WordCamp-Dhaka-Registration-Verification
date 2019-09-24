@@ -22,7 +22,13 @@
                                 <td>{{ $attendee->name }}</td>
                                 <td>{{ $attendee->email }}</td>
                                 <td>{{ $attendee->phone }}</td>
-                                <td class="text-right">{{ $attendee->verified_at ?? 'Verify' }}</td>
+                                <td class="text-right">
+                                    @if ( isset($attendee->verified_at) )
+                                        {{ $attendee->verified_at }}
+                                    @else
+                                        <a href="/attendees/{{ $attendee->id }}/verify">Verify</a>
+                                    @endif
+                                </td>
                             </tr>
                             @endforeach
                         </tbody>

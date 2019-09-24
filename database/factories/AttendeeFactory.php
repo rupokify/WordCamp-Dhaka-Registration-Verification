@@ -10,7 +10,6 @@ $factory->define(Attendee::class, function (Faker $faker) {
     	'agent_id' => rand(1, 8),
         'name' => $faker->name,
         'email' => $faker->unique()->safeEmail,
-        'phone' => "01715" . $faker->numberBetween(100000,999999),
-        'verified_at' => now()
+        'phone' => "01715" . $faker->numberBetween(100000,999999)
     ];
 });
