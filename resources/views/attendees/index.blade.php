@@ -8,7 +8,9 @@
                 <div class="card-header">Attendees</div>
 
                 <div class="card-body">
-                    Details will be here!
+                    @foreach ($attendees as $attendee)
+						<p>{{ $attendee->name }}</p>
+					@endforeach
                 </div>
             </div>
         </div>
