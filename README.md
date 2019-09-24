@@ -18,6 +18,8 @@ $ php artisan config:cache
 ## Usage
 
 ```bash
+$ php artisan migrate
+$ php artisan db:seed
 $ php artisan serve
 ```
 
