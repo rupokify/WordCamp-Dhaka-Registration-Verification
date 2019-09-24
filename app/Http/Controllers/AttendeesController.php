@@ -86,7 +86,7 @@ class AttendeesController extends Controller
             new VerifyAttendee($attendee)
         );
         // Uncomment the following line to activate SMS Verification
-        // $sms = MuthoFun::message('WordCamp Dhaka 2019 Verification Code: '.$attendee->verification_code)->to('0'.$attendee->phone)->send();
+        $sms = MuthoFun::message('WordCamp Dhaka 2019 Verification Code: '.$attendee->verification_code)->to('0'.$attendee->phone)->send();
         $attendee = Attendee::find($attendee->id);
         return view('attendees.verify', compact('attendee'));
     }
