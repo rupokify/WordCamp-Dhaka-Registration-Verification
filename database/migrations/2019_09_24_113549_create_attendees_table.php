@@ -15,10 +15,10 @@ class CreateAttendeesTable extends Migration
     {
         Schema::create('attendees', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->unsignedInteger('agent');
+            $table->unsignedInteger('agent_id');
             $table->string('name');
             $table->string('email');
-            $table->integer('phone');
+            $table->bigInteger('phone')->unique();
             $table->timestamp('verified_at')->nullable();
             $table->timestamps();
         });
