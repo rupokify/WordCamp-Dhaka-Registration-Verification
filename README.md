@@ -10,6 +10,7 @@ Follow the steps:
 
 Then run the following commands:
 ```bash
+$ composer install
 $ php artisan key:generate
 $ php artisan config:cache
 ```
