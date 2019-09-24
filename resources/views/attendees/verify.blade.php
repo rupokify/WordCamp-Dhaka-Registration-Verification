@@ -7,7 +7,6 @@
             <div class="card">
                 <div class="card-header">Attendees</div>
                 <div class="card-body">
-                	{{ $attendee->verification_code }}
 					<form method="POST" action="/attendees/{{ $attendee->id }}" class="card" enctype="multipart/form-data">
 						@method('PATCH')
 						@csrf

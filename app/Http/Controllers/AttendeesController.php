@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use Mail;
 use App\Attendee;
+use App\Mail\VerifyAttendee;
 use Illuminate\Http\Request;
 
 class AttendeesController extends Controller
@@ -78,6 +80,10 @@ class AttendeesController extends Controller
         Attendee::whereId($attendee->id)->update([
             'verification_code' => rand(100000, 999999)
         ]);
+        $attendee->refresh();
+        Mail::to($attendee->email)->send(
+            new VerifyAttendee($attendee)
+        );
         $attendee = Attendee::find($attendee->id);
         return view('attendees.verify', compact('attendee'));
     }
@@ -94,10 +100,8 @@ class AttendeesController extends Controller
         $verification_code = request()->validate([
             'verification_code' => ['required','numeric', 'max:999999', 'min:100000']
         ]);
-
-        // dd([$verification_code, $attendee->verification_code]);
-
-        if ( in_array($attendee->verification_code, $verification_code, ) ){
+        if ( in_array($attendee->verification_code, $verification_code, ) )
+        {
             $attributes['verified_at'] = now();
             Attendee::whereId($attendee->id)->update($attributes);
             return redirect('/attendees/');            
