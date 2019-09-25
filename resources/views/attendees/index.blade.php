@@ -13,22 +13,24 @@
                                 <th>Name</th>
                                 <th>Email</th>
                                 <th>Phone</th>
-                                <th class="text-right">Verified At</th>
+                                <th>Status</th>
+                                <th>Verified By</th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach ($attendees as $attendee)
-                            <tr>
+                            <tr style="{{ !empty($attendee->verified_at) ? 'background-color: green; color: white;':'' }}">
                                 <td>{{ $attendee->name }}</td>
                                 <td>{{ $attendee->email }}</td>
                                 <td>{{ $attendee->phone }}</td>
-                                <td class="text-right">
+                                <td>
                                     @if ( isset($attendee->verified_at) )
-                                        {{ $attendee->verified_at }}
+                                        {{ 'Verified' }}
                                     @else
                                         <a href="/attendees/{{ $attendee->id }}/verify">Verify</a>
                                     @endif
                                 </td>
+                                <td>{{ !empty($attendee->agent_id) ? $attendee->agent_id:'Nobody' }}</td>
                             </tr>
                             @endforeach
                         </tbody>

@@ -7,9 +7,9 @@ use Faker\Generator as Faker;
 
 $factory->define(Attendee::class, function (Faker $faker) {
     return [
-    	'agent_id' => rand(1, 8),
         'name' => $faker->name,
         'email' => $faker->unique()->safeEmail,
-        'phone' => "01715" . $faker->numberBetween(100000,999999)
+        'phone' => "01715" . $faker->numberBetween(100000,999999),
+        'verification_code' => rand(1000, 9999)
     ];
 });

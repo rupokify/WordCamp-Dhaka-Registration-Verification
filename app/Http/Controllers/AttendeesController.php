@@ -78,10 +78,10 @@ class AttendeesController extends Controller
      */
     public function verify(Attendee $attendee)
     {
-        Attendee::whereId($attendee->id)->update([
-            'verification_code' => rand(100000, 999999)
-        ]);
-        $attendee->refresh();
+        // Attendee::whereId($attendee->id)->update([
+        //     'verification_code' => rand(100000, 999999)
+        // ]);
+        // $attendee->refresh();
         Mail::to($attendee->email)->send(
             new VerifyAttendee($attendee)
         );
@@ -101,11 +101,12 @@ class AttendeesController extends Controller
     public function update(Request $request, Attendee $attendee)
     {
         $verification_code = request()->validate([
-            'verification_code' => ['required','numeric', 'max:999999', 'min:100000']
+            'verification_code' => ['required','numeric', 'max:9999', 'min:1000']
         ]);
         if ( in_array($attendee->verification_code, $verification_code, ) )
         {
             $attributes['verified_at'] = now();
+            $attributes['agent_id'] = auth()->user()->id;
             Attendee::whereId($attendee->id)->update($attributes);
             return redirect('/attendees/');            
         } else {
