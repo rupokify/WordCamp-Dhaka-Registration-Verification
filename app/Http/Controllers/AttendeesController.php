@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Mail;
+use Auth;
 use App\Attendee;
 use App\Mail\VerifyAttendee;
 use Illuminate\Http\Request;
@@ -78,14 +79,9 @@ class AttendeesController extends Controller
      */
     public function verify(Attendee $attendee)
     {
-        // Attendee::whereId($attendee->id)->update([
-        //     'verification_code' => rand(100000, 999999)
-        // ]);
-        // $attendee->refresh();
         Mail::to($attendee->email)->send(
             new VerifyAttendee($attendee)
         );
-        // Uncomment the following line to activate SMS Verification
         $sms = MuthoFun::message('WordCamp Dhaka 2019 Verification Code: '.$attendee->verification_code)->to('0'.$attendee->phone)->send();
         $attendee = Attendee::find($attendee->id);
         return view('attendees.verify', compact('attendee'));
@@ -106,7 +102,7 @@ class AttendeesController extends Controller
         if ( in_array($attendee->verification_code, $verification_code, ) )
         {
             $attributes['verified_at'] = now();
-            $attributes['agent_id'] = auth()->user()->id;
+            $attributes['agent'] = Auth::user()->name;
             Attendee::whereId($attendee->id)->update($attributes);
             return redirect('/attendees/');            
         } else {

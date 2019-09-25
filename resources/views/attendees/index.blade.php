@@ -30,7 +30,7 @@
                                         <a href="/attendees/{{ $attendee->id }}/verify">Verify</a>
                                     @endif
                                 </td>
-                                <td>{{ !empty($attendee->agent_id) ? $attendee->agent_id:'Nobody' }}</td>
+                                <td>{{ !empty($attendee->agent) ? $attendee->agent:'Nobody' }}</td>
                             </tr>
                             @endforeach
                         </tbody>
