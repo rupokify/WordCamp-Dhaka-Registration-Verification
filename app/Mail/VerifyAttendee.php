@@ -30,6 +30,6 @@ class VerifyAttendee extends Mailable
      */
     public function build()
     {
-        return $this->markdown('emails.verify-attendee');
+        return $this->subject('WordCamp Dhaka Verification Code')->markdown('emails.verify-attendee');
     }
 }
