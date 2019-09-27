@@ -7,7 +7,7 @@ use Auth;
 use App\Attendee;
 use App\Mail\VerifyAttendee;
 use Illuminate\Http\Request;
-use \Shipu\MuthoFun\Facades\MuthoFun;
+use GuzzleHttp\Client;
 
 class AttendeesController extends Controller
 {
@@ -82,7 +82,15 @@ class AttendeesController extends Controller
         Mail::to($attendee->email)->send(
             new VerifyAttendee($attendee)
         );
-        $sms = MuthoFun::message('WordCamp Dhaka 2019 Verification Code: '.$attendee->verification_code)->to('0'.$attendee->phone)->send();
+        $client = new Client();
+        $muthofunuser = env('MUTHOFUN_USERNAME', 'muthofunuser');
+        $muthofunpass = env('MUTHOFUN_PASSWORD', 'muthofunpass');
+        $targetmobile = '0'.$attendee->phone;
+        $sms = 'WordCamp Dhaka 2019 Verification Code: '.$attendee->verification_code;
+        $muthofunurl = 'http://developer.muthofun.com/sms.php?username='.$muthofunuser.'&password='.$muthofunpass.'&mobiles='.$targetmobile.'&sms='.$sms.'&uniccode=0';
+        $res = $client->get($muthofunurl);
+        //echo $res->getStatusCode();
+        //echo $res->getBody();
         $attendee = Attendee::find($attendee->id);
         return view('attendees.verify', compact('attendee'));
     }
@@ -99,7 +107,7 @@ class AttendeesController extends Controller
         $verification_code = request()->validate([
             'verification_code' => ['required','numeric', 'max:9999', 'min:1000']
         ]);
-        if ( in_array($attendee->verification_code, $verification_code, ) )
+        if ( in_array($attendee->verification_code, $verification_code ) )
         {
             $attributes['verified_at'] = now();
             $attributes['agent'] = Auth::user()->name;
